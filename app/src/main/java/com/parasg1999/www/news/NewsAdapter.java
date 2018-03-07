@@ -7,12 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 
 public class NewsAdapter extends ArrayAdapter<NewsItem> {
+
+    public NewsAdapter(@NonNull Context context, ArrayList<NewsItem> newsItems) {
+        super(context, 0, newsItems);
+    }
 
     @NonNull
     @Override
@@ -24,22 +28,21 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 
         NewsItem currentNews = getItem(position);
 
-        TextView titleView = (TextView) convertView.findViewById(R.id.title_text_view);
+        TextView titleView = convertView.findViewById(R.id.title_text_view);
         titleView.setText(currentNews.getTitle());
 
-        TextView descriptionView = (TextView) convertView.findViewById(R.id.description_text_view);
+        TextView descriptionView = convertView.findViewById(R.id.description_text_view);
         descriptionView.setText(currentNews.getDescription());
 
-        TextView sourceView = (TextView) convertView.findViewById(R.id.source_text_view);
+        TextView sourceView = convertView.findViewById(R.id.source_text_view);
         sourceView.setText(currentNews.getSource());
 
-        TextView dateView = (TextView) convertView.findViewById(R.id.datetime_text_view);
-        dateView.setText(currentNews.getDate());
+        TextView dateView = convertView.findViewById(R.id.datetime_text_view);
+
+        String dateStr = currentNews.getDate();
+        dateView.setText((new DateFormatSymbols().getMonths()[Integer.parseInt(dateStr.substring(5, 7)) - 1]) + " " + dateStr.substring(8, 10) + ", " + dateStr.substring(0, 4)
+                + "\n" + dateStr.substring(11, 19) + " UTC");
 
         return convertView;
-    }
-
-    public NewsAdapter(@NonNull Context context, ArrayList<NewsItem> newsItems) {
-        super(context, 0, newsItems);
     }
 }
